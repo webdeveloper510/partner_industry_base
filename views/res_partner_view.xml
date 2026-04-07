@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_partner_tree_inherit_industry" model="ir.ui.view">
+            <field name="name">res.partner.tree.inherit.industry</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="industry_id" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <field name="tone_id" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_partner_form_inherit_industry" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit.industry</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                <field name="industry_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
+                        placeholder='e.g. "Fitness", "Fashion", "Real Estate", ...'/>
+                <field name="tone_id" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"
+                        placeholder='e.g. "Proffesional", "Neutral", "Polite", ...'/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_res_partner_filter_inherit_industry" model="ir.ui.view">
+            <field name="name">res.partner.select.inherit.industry</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                <field name="industry_id" string="Industry/Category" operator="child_of"/>
+                <field name="tone_id" string="Tone Type" operator="child_of"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_partner_kanban_view_inherit_industry" model="ir.ui.view">
+            <field name="name">res.partner.kanban.inherit.industry</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//kanban/field[@name='category_id']" position="after">
+                    <field name="industry_id"/>
+                    <field name="tone_id"/>
+                </xpath>
+
+                <xpath expr="//div[contains(@class, 'o_kanban_tags_section')]" position="after">
+                    <div class="o_kanban_tags_section">
+                        <field name="industry_id" widget="many2many_tags"/>
+                        <field name="tone_id" widget="many2many_tags"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Industries -->
+        <record id="view_partner_industry_form" model="ir.ui.view">
+            <field name="name">Industry/Categories</field>
+            <field name="model">res.partner.industry_category</field>
+            <field name="arch" type="xml">
+                <form string="Industry/Categories">
+                    <sheet>
+                        <group col="4">
+                            <field name="name" placeholder='e.g. "Industry/Categories Type"'/>
+                            <field name="color" widget="color_picker"/>
+                            <field name="parent_id"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_partner_industry_list" model="ir.ui.view">
+            <field name="name">Industry/Categories</field>
+            <field name="model">res.partner.industry_category</field>
+            <field eval="6" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Industry/Categories">
+                    <field name="display_name"/>
+                    <field name="color" widget="color_picker"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_partner_industry_view_search" model="ir.ui.view">
+            <field name="name">res.partner.industry_category.view.search</field>
+            <field name="model">res.partner.industry_category</field>
+            <field name="arch" type="xml">
+                <search string="Search Partner Industry/Category">
+                    <field name="name"/>
+                    <field name="display_name"/>
+                    <separator/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_partner_industry_form" model="ir.actions.act_window">
+            <field name="name">Industry/Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.industry_category</field>
+            <field name="search_view_id" ref="res_partner_industry_view_search"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create Industry/Category
+              </p><p>
+                Assign Industry/Category to your contacts to organize, filter and track them.
+              </p>
+            </field>
+        </record>
+
+        <!-- ================== -->
+        <!-- Partner Tone Type  -->
+        <!-- ================== -->
+
+        <!-- Tones -->
+        <record id="view_partner_tone_form" model="ir.ui.view">
+            <field name="name">Tone Types</field>
+            <field name="model">res.partner.tone</field>
+            <field name="arch" type="xml">
+                <form string="Tone Types">
+                    <sheet>
+                        <group col="4">
+                            <field name="name" placeholder='e.g. "Tone Types Type"'/>
+                            <field name="color" widget="color_picker"/>
+                            <field name="parent_id"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_partner_tone_list" model="ir.ui.view">
+            <field name="name">Tone Types</field>
+            <field name="model">res.partner.tone</field>
+            <field eval="6" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Tone Types">
+                    <field name="display_name"/>
+                    <field name="color" widget="color_picker"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_partner_tone_view_search" model="ir.ui.view">
+            <field name="name">res.partner.tone.view.search</field>
+            <field name="model">res.partner.tone</field>
+            <field name="arch" type="xml">
+                <search string="Search Partner Tone Type">
+                    <field name="name"/>
+                    <field name="display_name"/>
+                    <separator/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_partner_tone_form" model="ir.actions.act_window">
+            <field name="name">Tone Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.tone</field>
+            <field name="search_view_id" ref="res_partner_tone_view_search"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create Tone Type
+              </p><p>
+                Assign Tone Type to your contacts to organize, filter and track them.
+              </p>
+            </field>
+        </record>
+
+
+        <menuitem id="menu_partner_industry_category_form"
+            action="action_partner_industry_form"
+            name="Industries/Categories"
+            sequence="3" parent="contacts.res_partner_menu_config"/>
+
+        <menuitem id="menu_partner_tone_form"
+            action="action_partner_tone_form"
+            name="Tone Types"
+            sequence="4" parent="contacts.res_partner_menu_config"/>
+            
+    </data>
+</odoo>
